@@ -14,9 +14,11 @@ screen.fill(BGCOLOR)
 
 class Board:
     def __init__(self):
-        self.squares = np.zeros(( ROWS, COLS))
+        self.squares = np.zeros(( ROWS, COLS ))
         self.grid()
         self.obstacle()
+        self.start()
+        self.end()
         
 
     def grid(self):
@@ -37,6 +39,33 @@ class Board:
 
             rect = pygame.Rect(col*SQSIZE, row*SQSIZE, SQSIZE, SQSIZE)
             pygame.draw.rect(screen, OBSTACLECOLOR, rect)
+            self.squares[0][1] = 1
+    
+    def start(self):
+        row = random.randint(0,49)
+        col = random.randint(0,49)
+
+        if self.squares[row][col] == 0:
+            rect = pygame.Rect(col*SQSIZE, row*SQSIZE, SQSIZE, SQSIZE)
+            pygame.draw.rect(screen, STARTCOLOR, rect)
+            self.squares[row][col] = 2
+            return
+        
+        else:
+            self.start()
+    
+    def end(self):
+        row = random.randint(0,49)
+        col = random.randint(0,49)
+
+        if self.squares[row][col] == 0:
+            rect = pygame.Rect(col*SQSIZE, row*SQSIZE, SQSIZE, SQSIZE)
+            pygame.draw.rect(screen, ENDCOLOR, rect)
+            self.squares[row][col] = 2
+            return
+        
+        else:
+            self.end()
 
     def reset(self):
         self.__init__()
