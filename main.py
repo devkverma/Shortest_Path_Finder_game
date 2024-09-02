@@ -18,31 +18,21 @@ screen.fill(BGCOLOR)
 class Board:
     def __init__(self):
         self.squares = np.zeros(( ROWS, COLS ))
-        self.grid()
+        screen.fill(BGCOLOR)
         self.obstacle()
         self.Start = self.start()
         self.End = self.end()
         
-
-    def grid(self):
-        screen.fill(BGCOLOR)
-        # vertical lines
-        for x in range(SQSIZE , SCREEN_WIDTH, SQSIZE):
-            pygame.draw.line(screen, GRIDCOLOR, (x, 0), (x, SCREEN_HEIGHT))
-
-        # horizontal lines
-        for y in range(SQSIZE, SCREEN_HEIGHT, SQSIZE):
-            pygame.draw.line(screen, GRIDCOLOR, (0,y), (SCREEN_WIDTH,y))
     
     def obstacle(self):
         numberOfObstacles = random.randint(100,1000)
         for i in range(numberOfObstacles):
-            row = random.randint(0,50)
-            col = random.randint(0,50)
+            row = random.randint(0,49)
+            col = random.randint(0,49)
 
             rect = pygame.Rect(col*SQSIZE, row*SQSIZE, SQSIZE, SQSIZE)
             pygame.draw.rect(screen, OBSTACLECOLOR, rect)
-            self.squares[0][1] = 5
+            self.squares[row][col] = 5
     
     def start(self):
         row = random.randint(0,49)
@@ -72,11 +62,17 @@ class Board:
         rect = pygame.Rect(y*SQSIZE,x*SQSIZE,SQSIZE,SQSIZE)
         pygame.draw.rect(screen,color,rect)
         self.squares[x][y] = 3
+        time.sleep(0.025)
+        pygame.display.update()
         
 
     def reset(self):
-        self.__init__()
-        AI(self)
+        self.squares = np.zeros(( ROWS, COLS ))
+        screen.fill(BGCOLOR)
+        self.obstacle()
+        self.Start = self.start()
+        self.End = self.end()
+        
 
 class AI:
     def __init__(self,board):
@@ -106,7 +102,6 @@ class AI:
         while current in came_from:
             current = came_from[current]
             path.append(current)
-        path.reverse()
         return path
     
     def astar(self):
@@ -146,21 +141,19 @@ def main():
                 pygame.quit()
                 sys.exit()
             
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                pos = event.pos
-                row = pos[1] // SQSIZE
-                col = pos[0] // SQSIZE
-            
             if event.type == pygame.KEYDOWN:
                 # r - reset
                 if event.key == pygame.K_r:
                     board.reset()
+                    ai = AI(board)
+                
+
                 
                 if event.key == pygame.K_SPACE:
                     path = ai.astar()
                     for x,y in path:
                         board.colorBox(x,y,ENDCOLOR)
-                        pygame.display.update()
+                        
 
                 
 
