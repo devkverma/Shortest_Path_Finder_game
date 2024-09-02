@@ -35,24 +35,24 @@ class Board:
             self.squares[row][col] = 5
     
     def start(self):
-        row = random.randint(0,49)
-        col = random.randint(0,49)
+        row = random.randint(0,24)
+        col = random.randint(0,24)
 
         while self.squares[row][col] != 0:
-            row = random.randint(0,49)
-            col = random.randint(0,49)
+            row = random.randint(0,24)
+            col = random.randint(0,24)
         rect = pygame.Rect(col*SQSIZE,row*SQSIZE,SQSIZE,SQSIZE)
         pygame.draw.rect(screen,STARTCOLOR,rect)
         self.squares[row][col] = 1
         return row,col
     
     def end(self):
-        row = random.randint(0,49)
-        col = random.randint(0,49)
+        row = random.randint(25,49)
+        col = random.randint(25,49)
 
         while self.squares[row][col] != 0:
-            row = random.randint(0,49)
-            col = random.randint(0,49)
+            row = random.randint(25,49)
+            col = random.randint(25,49)
         rect = pygame.Rect(col*SQSIZE,row*SQSIZE,SQSIZE,SQSIZE)
         pygame.draw.rect(screen,ENDCOLOR,rect)
         self.squares[row][col] = 2
