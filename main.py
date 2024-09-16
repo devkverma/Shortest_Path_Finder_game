@@ -3,17 +3,19 @@ import pygame
 import random
 import math
 import heapq
-import time
 import numpy as np
 
 from constants import *
 
 
+
 pygame.init()
 # MAIN SCREEN
-screen = pygame.display.set_mode( (SCREEN_WIDTH,SCREEN_HEIGHT))
+screen = pygame.display.set_mode( (SCREEN_WIDTH,SCREEN_HEIGHT),pygame.NOFRAME)
 pygame.display.set_caption('Shortest Path Finder')
 screen.fill(BGCOLOR)
+
+clock = pygame.time.Clock()
 
 class Board:
     def __init__(self):
@@ -62,8 +64,9 @@ class Board:
         rect = pygame.Rect(y*SQSIZE,x*SQSIZE,SQSIZE,SQSIZE)
         pygame.draw.rect(screen,color,rect)
         self.squares[x][y] = 3
-        time.sleep(0.025)
+        clock.tick(38)
         pygame.display.update()
+        
         
 
     def reset(self):
@@ -131,6 +134,8 @@ class AI:
 
 def main():
 
+    
+
     board = Board()
     ai = AI(board)
     while True:
@@ -153,10 +158,15 @@ def main():
                     path = ai.astar()
                     for x,y in path:
                         board.colorBox(x,y,ENDCOLOR)
+
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                    sys.exit()
                         
 
                 
-
+        
         pygame.display.update()
+
 
 main()
